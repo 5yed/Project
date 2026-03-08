@@ -1,0 +1,75 @@
+Setup:
+backend:
+create a database
+frontend:
+create a website with a home page (blank page with buttons to be added later when new functionality exists)
+
+
+
+Customer Stories:
+(⭐️⭐️⭐️) As a customer, I want to view the menu, so that I can browse the available items before deciding what to order.
+backend:
+create a table for a menu of placeholder values (future sprint - split into tables of food + drinks or starters, mains, etc.)
+frontend:
+create a separate page with a button on home page
+create a button to show menu (return list of values from db in a table format, to be made fancy in later sprints)
+
+(⭐️⭐️⭐️) As a customer, I want to place an order, so that I can request the food and drinks I want.
+backend:
+create a table of orders that have been made (or could be stored in a csv file)
+frontend:
+create a separate page with a button linked to the home page
+have an input box of items to be requested (either text input or a few drop down menus, to be made fancy in later sprints)
+
+
+
+Waiter Stories:
+(⭐️⭐️⭐️) As a waiter, I want to be able to change the menu, so that I can update item availability or make adjustments as needed.
+backend:
+prepared statement to remove from menu
+prepared statement to add to menu
+frontend:
+create a separate page with a button linked to the home page
+have two buttons to either remove or add to menu with text input for remove/add
+
+(⭐️⭐️⭐️) As a waiter, I want to confirm orders, so that I can ensure the correct items have been requested before sending them to the kitchen.
+backend:
+adding in a column to the orders table with default value NULL
+update SELECT statements to include this column
+when orders page is visited, display all orders
+when "unconfirmed orders" button/checkmark is pressed, display all unconfirmed orders
+frontend:
+have a page that has buttons for marking orders as confirmed, delivered and cancelling orders linked to home page
+add a button/check box to filter for unconfirmed orders
+
+(⭐️⭐️⭐️) As a waiter, I want to track order times, so that I can monitor how long orders have been in progress and ensure timely service.
+backend:
+adding in a column to the orders table of time the order was made
+update SELECT statements to include this column
+(⭐️⭐️⭐️) As a waiter, I want to mark an order as delivered, so that I can notify the system when a customer’s order has been served.
+backend:
+prepared statement to change order in progress table (made 2 stories down) from "confirmed" to "delivered"
+frontend:
+have a page that has buttons for marking orders as confirmed, delivered and cancelling orders linked to home page
+dropdown list of confirmed orders to be marked as being delivered
+
+(⭐️⭐️⭐️) As a waiter, I want to cancel an order, so that I can remove items or orders that were mistakenly placed or need to be changed.
+backend:
+prepared statement to remove order from orders table and progress table
+frontend:
+create a dropdown table of all orders that are either "ordered" or "confirmed"
+
+(⭐️⭐️⭐️) As a waiter, I want to receive notifications when an order is ready for delivery, so that I can promptly deliver it to the customer.
+backend:
+create a progress table, that tracks ordered, confirmed, delivered orders
+frontend:
+create a button that displays this
+
+
+
+Kitchen Staff Stories:
+(⭐️⭐️⭐️) As a kitchen staff member, I want to confirm customer orders, so that the team can be assured that the food and drinks ordered by the customer are available.
+story resolved via code written by waiter's 2nd user story
+
+(⭐️⭐️⭐️) As a kitchen staff member, I want to notify waiters when an order is ready, so that they can deliver the food to the customer.
+story resolved via code written by waiter's last user story (I don't really know what they mean by notify specifically)

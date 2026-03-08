@@ -1,0 +1,7 @@
+.submitButton {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin: 0;
+  height: 100%;
+}
