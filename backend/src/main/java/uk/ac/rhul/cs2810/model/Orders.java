@@ -2,14 +2,19 @@ package uk.ac.rhul.cs2810.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+
 
 @Entity
 @Table(name = "orders")
@@ -47,6 +52,9 @@ public class Orders {
   @Column(name = "cancelled_at")
   private Instant cancelledAt;
 
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<OrderItem> orderItems = new ArrayList<>();
+
   public Orders() {}
 
   public Orders(Long restaurantTableId, OrderStatus status) {
@@ -58,6 +66,7 @@ public class Orders {
 
   @PrePersist
   public void onCreate() {
+
     if (status == null)
       status = OrderStatus.PLACED;
     if (amountTotal == null)
@@ -66,6 +75,24 @@ public class Orders {
       amountPaid = BigDecimal.ZERO;
     if (orderedAt == null)
       orderedAt = Instant.now();
+  }
+
+  /**
+   * Calculates total amout to pay.
+   * 
+   * @return total as BigDecimal.
+   */
+  public BigDecimal calculateTotal() {
+    BigDecimal total = BigDecimal.ZERO;
+
+    for (OrderItem item : orderItems) {
+      BigDecimal price = item.getMenuItem().getPrice();
+      BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+      total = total.add(price.multiply(quantity));
+    }
+
+    this.amountTotal = total;
+    return total;
   }
 
   public Long getId() {
@@ -134,6 +161,10 @@ public class Orders {
 
   public Instant getReadyAt() {
     return readyAt;
+  }
+
+  public List<OrderItem> getOrderItems() {
+    return orderItems;
   }
 
   public void setReadyAt(Instant readyAt) {

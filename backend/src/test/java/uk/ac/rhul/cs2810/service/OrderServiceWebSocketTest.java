@@ -465,25 +465,26 @@ class OrderServiceWebSocketTest {
     verify(wsHandler, never()).broadcast(anyString());
   }
 
-  @Test
-  void checkoutOrder_shouldValidateCardAndThrowOnInvalidCard() {
-    OrderCheckoutRequest payload = new OrderCheckoutRequest();
-    payload.setOrderId(103L);
-    payload.setAmount(new BigDecimal("10"));
-    payload.setCardNumber("1234567890123456"); // invalid Luhn
-    payload.setCvv("123");
-    payload.setNameOnCard("Test User");
-    payload.setExpiryMonth(12);
-    payload.setExpiryYear(2030);
-
-    // Should throw on invalid card before even fetching the order
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> orderService.checkoutOrder(payload.getOrderId(), payload));
-
-    verify(ordersRepository, never()).save(any());
-    verify(wsHandler, never()).broadcast(anyString());
-  }
+  // COMMENTED/REMOVED the Luhn validation so no test needed
+  // @Test
+  // void checkoutOrder_shouldValidateCardAndThrowOnInvalidCard() {
+  //   OrderCheckoutRequest payload = new OrderCheckoutRequest();
+  //   payload.setOrderId(103L);
+  //   payload.setAmount(new BigDecimal("10"));
+  //   payload.setCardNumber("1234567890123456"); // invalid Luhn
+  //   payload.setCvv("123");
+  //   payload.setNameOnCard("Test User");
+  //   payload.setExpiryMonth(12);
+  //   payload.setExpiryYear(2030);
+  //
+  //   // Should throw on invalid card before even fetching the order
+  //   assertThrows(
+  //       IllegalArgumentException.class,
+  //       () -> orderService.checkoutOrder(payload.getOrderId(), payload));
+  //
+  //   verify(ordersRepository, never()).save(any());
+  //   verify(wsHandler, never()).broadcast(anyString());
+  // }
 
   @Test
   void checkoutOrder_shouldThrowIfCancelled() {

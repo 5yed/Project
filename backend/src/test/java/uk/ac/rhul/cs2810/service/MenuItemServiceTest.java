@@ -9,7 +9,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,11 +20,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.multipart.MultipartFile;
 import uk.ac.rhul.cs2810.dto.UpdateMenuItemRequest;
+import uk.ac.rhul.cs2810.model.Allergen;
 import uk.ac.rhul.cs2810.model.MenuItem;
+import uk.ac.rhul.cs2810.model.DietaryRestriction;
 import uk.ac.rhul.cs2810.model.MenuItemCategory;
 import uk.ac.rhul.cs2810.model.MenuItemStatus;
 import uk.ac.rhul.cs2810.repository.MenuItemCategoryRepository;
 import uk.ac.rhul.cs2810.repository.MenuItemRepository;
+import uk.ac.rhul.cs2810.service.MenuItemService;
 
 /**
  * Unit tests for MenuItemService.
@@ -59,14 +65,14 @@ class MenuItemServiceTest {
 
     when(req.getName()).thenReturn("Burger");
     when(req.getDescription()).thenReturn("Nice");
-    when(req.getPrice()).thenReturn(9.5);
+    when(req.getPrice()).thenReturn(new BigDecimal("9.50"));
     when(req.getKcal()).thenReturn(500.0);
 
     MenuItem result = service.updateMenuItem(1L, req);
 
     verify(item).setName("Burger");
     verify(item).setDescription("Nice");
-    verify(item).setPrice(9.5);
+    verify(item).setPrice(new BigDecimal("9.50"));
     verify(item).setKcal(500.0);
 
     assertEquals(item, result);
@@ -95,7 +101,7 @@ class MenuItemServiceTest {
     MenuItemCategory category = mock(MenuItemCategory.class);
 
     when(req.getName()).thenReturn("Pizza");
-    when(req.getPrice()).thenReturn(12.0);
+    when(req.getPrice()).thenReturn(new BigDecimal("12.0"));
     when(req.getKcal()).thenReturn(800.0);
     when(req.getStatus()).thenReturn(MenuItemStatus.AVAILABLE);
     when(req.getCategoryId()).thenReturn(2L);
@@ -123,7 +129,7 @@ class MenuItemServiceTest {
     UpdateMenuItemRequest req = mock(UpdateMenuItemRequest.class);
 
     when(req.getName()).thenReturn(null);
-    when(req.getPrice()).thenReturn(1.0);
+    when(req.getPrice()).thenReturn(new BigDecimal("1.0"));
     when(req.getKcal()).thenReturn(1.0);
     when(req.getStatus()).thenReturn(MenuItemStatus.AVAILABLE);
     when(req.getCategoryId()).thenReturn(1L);
@@ -140,7 +146,7 @@ class MenuItemServiceTest {
     UpdateMenuItemRequest req = mock(UpdateMenuItemRequest.class);
 
     when(req.getName()).thenReturn("Soup");
-    when(req.getPrice()).thenReturn(5.0);
+    when(req.getPrice()).thenReturn(new BigDecimal("5.0"));
     when(req.getKcal()).thenReturn(200.0);
     when(req.getStatus()).thenReturn(MenuItemStatus.AVAILABLE);
     when(req.getCategoryId()).thenReturn(3L);
@@ -160,7 +166,7 @@ class MenuItemServiceTest {
     MenuItemCategory category = mock(MenuItemCategory.class);
 
     when(req.getName()).thenReturn("Food");
-    when(req.getPrice()).thenReturn(1.0);
+    when(req.getPrice()).thenReturn(new BigDecimal("1.0"));
     when(req.getKcal()).thenReturn(1.0);
     when(req.getStatus()).thenReturn(MenuItemStatus.AVAILABLE);
     when(req.getCategoryId()).thenReturn(1L);
@@ -206,5 +212,58 @@ class MenuItemServiceTest {
     when(file.getContentType()).thenReturn("text/plain");
 
     assertThrows(IllegalArgumentException.class, () -> service.saveMenuItemFile(1L, file));
+  }
+
+  @Test
+  public void testDietaryFiltering() {
+    DietaryRestriction vegan = new DietaryRestriction("vegan");
+    DietaryRestriction glutenFree = new DietaryRestriction("gluten-free");
+
+    MenuItem pizza = new MenuItem();
+    MenuItem lettuce = new MenuItem();
+    MenuItem egg = new MenuItem();
+
+    pizza.setName("pizza");
+    pizza.addDietaryRestriction(vegan);
+    pizza.addDietaryRestriction(glutenFree);
+
+    lettuce.setName("lettuce");
+    lettuce.addDietaryRestriction(vegan);
+
+    egg.setName("egg");
+
+    when(menuItemRepository.findAll()).thenReturn(List.of(pizza, lettuce, egg));
+    List<MenuItem> filteredList = service.filterItemByDietary(Set.of("vegan", "gluten-free"));
+
+    assertEquals(2, filteredList.size());
+    assertEquals("pizza", filteredList.get(0).getName());
+  }
+
+  @Test
+  public void testAllergenFiltering() {
+    Allergen nuts = Allergen.NUTS;
+    Allergen eggs = Allergen.EGGS;
+    Allergen milk = Allergen.MILK;
+
+    MenuItem cake = new MenuItem();
+    MenuItem eggSandwich = new MenuItem();
+    MenuItem lettuce = new MenuItem();
+
+    cake.setName("cake");
+    cake.addAllergen(nuts.getId());
+    cake.addAllergen(eggs.getId());
+    cake.addAllergen(milk.getId());
+
+    eggSandwich.setName("egg sandwich");
+    eggSandwich.addAllergen(eggs.getId());
+    eggSandwich.addAllergen(milk.getId());
+
+    lettuce.setName("lettuce");
+
+    when(menuItemRepository.findAll()).thenReturn(List.of(cake, eggSandwich, lettuce));
+    List<MenuItem> filteredList = service.filterItemByAllergens(Set.of("nuts", "eggs", "milk"));
+
+    assertEquals(2, filteredList.size());
+    assertEquals("cake", filteredList.get(0).getName());
   }
 }

@@ -1,5 +1,6 @@
 package uk.ac.rhul.cs2810.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
@@ -17,6 +19,7 @@ public class OrderItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @JsonIgnore
   @ManyToOne(optional = false)
   @JoinColumn(name = "order_id", nullable = false)
   private Orders order;
@@ -88,5 +91,20 @@ public class OrderItem {
 
   public void setSpecialNote(String specialNote) {
     this.specialNote = specialNote;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof OrderItem))
+      return false;
+    OrderItem other = (OrderItem) o;
+    return id != null && id.equals(other.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

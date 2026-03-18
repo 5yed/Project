@@ -2,6 +2,7 @@
 package uk.ac.rhul.cs2810.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,7 +30,7 @@ public class OrderItemTest {
     menuItem.setDescription("description");
     menuItem.setKcal(1.1);
     menuItem.setName("garlic");
-    menuItem.setPrice(2.50);
+    menuItem.setPrice(new BigDecimal("9.99"));
 
     OrderItem orderItem = new OrderItem();
     orderItem.setOrder(order);

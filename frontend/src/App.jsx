@@ -5,14 +5,16 @@ import HomePage from './pages/HomePage';
 import StaffPage from './pages/StaffPage';
 import MenuSection from './components/MenuSection';
 import CheckoutSection from './components/CheckoutSection';
+import TableSelectionPage from './pages/TableSelectionPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage/>}>
+        <Route path='/' element={<TableSelectionPage/>}/>
+        <Route path="/menu" element={<HomePage/>}>
           <Route index element={<MenuSection/>}/>
-          <Route path="/checkout" element={<CheckoutSection/>}/>
+          <Route path="checkout/:id" element={<CheckoutSection/>}/>
         </Route>
         <Route path="/staffPage" element={<StaffPage/>}/>
       </Routes>

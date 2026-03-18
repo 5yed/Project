@@ -49,6 +49,9 @@
   background-color: #F3C886;
   flex: 0.3;
   border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .basketLabel {
@@ -59,4 +62,9 @@
 
 .orderItems {
   padding: 0 0.5rem;;
+}
+
+.checkoutButton {
+  margin: 0.5rem;
+  margin-top: auto;
 }

@@ -1,5 +1,6 @@
 package uk.ac.rhul.cs2810.dto;
 
+import java.math.BigDecimal;
 import uk.ac.rhul.cs2810.model.MenuItemStatus;
 
 public class UpdateMenuItemRequest {
@@ -9,7 +10,7 @@ public class UpdateMenuItemRequest {
   private String image;
 
   private Double kcal;
-  private Double price;
+  private BigDecimal price;
   private Double fat;
   private Double protein;
   private Double carbs;
@@ -34,7 +35,7 @@ public class UpdateMenuItemRequest {
     return kcal;
   }
 
-  public Double getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 

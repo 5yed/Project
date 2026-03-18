@@ -4,14 +4,12 @@
   font-size: 2rem;
 }
 
-/* Basket */
 .basketContainer {
   background-color: #F3C886;
   flex: 0.3;
   border-radius: 1rem;
 }
 
-/* Checkout Section */
 .checkoutFormContainer {
   display: flex;
   justify-content: center;

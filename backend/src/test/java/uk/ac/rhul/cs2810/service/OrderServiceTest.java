@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +18,26 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 import uk.ac.rhul.cs2810.handler.MyWebSocketHandler;
+import uk.ac.rhul.cs2810.model.MenuItem;
 import uk.ac.rhul.cs2810.model.OrderStatus;
 import uk.ac.rhul.cs2810.model.Orders;
+import uk.ac.rhul.cs2810.repository.MenuItemRepository;
+import uk.ac.rhul.cs2810.repository.OrderItemRepository;
 import uk.ac.rhul.cs2810.repository.OrdersRepository;
 
 class OrderServiceTest {
 
   @Mock
   private OrdersRepository ordersRepository;
+
+  @Mock
+  private MenuItemRepository menuItemRepository;
+
+  @Mock
+  private OrderItemRepository orderItemRepository;
+
+  @Mock
+  private OrderItemService orderItemService;
 
   @Mock
   private MyWebSocketHandler wsHandler;
@@ -34,11 +47,20 @@ class OrderServiceTest {
 
   private Orders order;
 
+  private MenuItem menuItem;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     order = new Orders(1L, OrderStatus.CREATING);
     order.setId(1L);
+
+    menuItem = new MenuItem();
+    menuItem.setId(1L);
+    menuItem.setDescription("description");
+    menuItem.setKcal(1.1);
+    menuItem.setName("garlic");
+    menuItem.setPrice(new BigDecimal("9.99"));
   }
 
   // ===============================

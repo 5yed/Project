@@ -52,3 +52,66 @@
   filter: brightness(120%);
   color: white;
 }
+
+.topBarRow2 {
+  position: relative;
+}
+
+.bottomRowContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alertWrapper {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.alertButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  color: var(--primary-text);
+}
+
+.alertButton:hover {
+  text-decoration: underline;
+}
+
+.alertDropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 260px;
+  max-width: 320px;
+  background: white;
+  border: 1px solid #d9c39a;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.75rem;
+  z-index: 1000;
+  text-align: left;
+}
+
+.dropdownTitle {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.dropdownItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.emptyMessage {
+  color: #666;
+}

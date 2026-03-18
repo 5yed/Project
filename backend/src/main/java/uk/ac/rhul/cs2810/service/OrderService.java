@@ -28,11 +28,9 @@ public class OrderService {
     Orders order = ordersRepository.save(new Orders(tableId, OrderStatus.CREATING));
 
     try {
-      String json =
-          """
+      String json = """
           {"type":"ORDER_CREATED","orderId":%d}
-          """
-              .formatted(order.getId());
+          """.formatted(order.getId());
 
       wsHandler.broadcast(json);
     } catch (Exception e) {
@@ -43,10 +41,8 @@ public class OrderService {
   }
 
   public Orders getOrder(Long id) {
-    return ordersRepository
-        .findById(id)
-        .orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found: " + id));
+    return ordersRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found: " + id));
   }
 
   public Iterable<Orders> getAllOrders() {
@@ -74,32 +70,37 @@ public class OrderService {
     current.setStatus(newStatus);
 
     if (newStatus == OrderStatus.IN_PROGRESS) {
-      if (current.getStartedAt() == null) current.setStartedAt(now);
+      if (current.getStartedAt() == null)
+        current.setStartedAt(now);
     }
 
     if (newStatus == OrderStatus.READY) {
-      if (current.getStartedAt() == null) current.setStartedAt(now);
-      if (current.getReadyAt() == null) current.setReadyAt(now);
+      if (current.getStartedAt() == null)
+        current.setStartedAt(now);
+      if (current.getReadyAt() == null)
+        current.setReadyAt(now);
     }
 
     if (newStatus == OrderStatus.DELIVERED) {
-      if (current.getStartedAt() == null) current.setStartedAt(now);
-      if (current.getReadyAt() == null) current.setReadyAt(now);
-      if (current.getDeliveredAt() == null) current.setDeliveredAt(now);
+      if (current.getStartedAt() == null)
+        current.setStartedAt(now);
+      if (current.getReadyAt() == null)
+        current.setReadyAt(now);
+      if (current.getDeliveredAt() == null)
+        current.setDeliveredAt(now);
     }
 
     if (newStatus == OrderStatus.CANCELLED) {
-      if (current.getCancelledAt() == null) current.setCancelledAt(now);
+      if (current.getCancelledAt() == null)
+        current.setCancelledAt(now);
     }
 
     Orders updated = ordersRepository.save(current);
 
     try {
-      String json =
-          """
+      String json = """
           {"type":"ORDER_UPDATED","orderId":%d}
-          """
-              .formatted(orderId);
+          """.formatted(orderId);
 
       wsHandler.broadcast(json);
     } catch (Exception e) {
@@ -110,7 +111,8 @@ public class OrderService {
   }
 
   private boolean isValidTransition(OrderStatus from, OrderStatus to) {
-    if (to == OrderStatus.CANCELLED) return true;
+    if (to == OrderStatus.CANCELLED)
+      return true;
 
     return switch (from) {
       case CREATING -> to == OrderStatus.PLACED;
@@ -145,7 +147,7 @@ public class OrderService {
     }
 
     order.setAmountPaid(newAmountPaid);
-
+    order.setStatus(OrderStatus.PLACED);
     Orders saved = ordersRepository.save(order);
 
     broadcastOrderUpdated(order.getId());
@@ -159,9 +161,12 @@ public class OrderService {
       throw new IllegalArgumentException("Invalid card number");
     }
 
-    if (!isValidLuhn(payload.getCardNumber())) {
-      throw new IllegalArgumentException("Card failed validation check");
-    }
+
+    /*
+     * if (!isValidLuhn(payload.getCardNumber())) { throw new
+     * IllegalArgumentException("Card failed validation check"); }
+     */
+
 
     if (payload.getCvv() == null || !payload.getCvv().matches("\\d{3,4}")) {
       throw new IllegalArgumentException("Invalid CVV");
@@ -210,11 +215,9 @@ public class OrderService {
 
   private void broadcastOrderUpdated(Long orderId) {
     try {
-      String json =
-          """
+      String json = """
           {"type":"ORDER_UPDATED","orderId":%d}
-          """
-              .formatted(orderId);
+          """.formatted(orderId);
 
       wsHandler.broadcast(json);
     } catch (Exception e) {

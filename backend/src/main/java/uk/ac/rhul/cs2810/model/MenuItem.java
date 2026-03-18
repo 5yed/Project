@@ -1,5 +1,6 @@
 package uk.ac.rhul.cs2810.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CollectionTable;
@@ -32,7 +33,7 @@ public class MenuItem {
   private String description;
 
   @Column(nullable = false)
-  private Double price = 0.0;
+  private BigDecimal price;
 
   @Column
   private String image;
@@ -63,7 +64,7 @@ public class MenuItem {
   @JoinColumn(name = "category_id", nullable = false)
   private MenuItemCategory category;
 
-  public MenuItem(String name, Double price, Double kcal, MenuItemStatus status,
+  public MenuItem(String name, BigDecimal price, Double kcal, MenuItemStatus status,
       MenuItemCategory category) {
     this.name = name;
     this.price = price;
@@ -92,7 +93,7 @@ public class MenuItem {
     return description;
   }
 
-  public Double getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
@@ -140,7 +141,7 @@ public class MenuItem {
     this.description = description;
   }
 
-  public void setPrice(Double price) {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
 
@@ -180,5 +181,48 @@ public class MenuItem {
 
   public void setCategory(MenuItemCategory category) {
     this.category = category;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || !(o instanceof MenuItem)) {
+      return false;
+    }
+
+    MenuItem other = (MenuItem) o;
+
+    // If both IDs exist, compare by ID
+    if (this.id != null && other.id != null) {
+      return this.id.equals(other.id);
+    }
+
+    // Otherwise compare business fields
+    return java.util.Objects.equals(name, other.name)
+        && java.util.Objects.equals(description, other.description)
+        && java.util.Objects.equals(price, other.price)
+        && java.util.Objects.equals(image, other.image)
+        && java.util.Objects.equals(kcal, other.kcal) && java.util.Objects.equals(fat, other.fat)
+        && java.util.Objects.equals(protein, other.protein)
+        && java.util.Objects.equals(carbs, other.carbs) && status == other.status
+        && java.util.Objects.equals(category, other.category)
+        && java.util.Objects.equals(dietaryRestrictions, other.dietaryRestrictions)
+        && java.util.Objects.equals(allergens, other.allergens);
+  }
+
+  @Override
+  public int hashCode() {
+    if (id != null) {
+      return id.hashCode();
+    }
+
+    return java.util.Objects.hash(name, description, price, image, kcal, fat, protein, carbs,
+        status, category, dietaryRestrictions, allergens);
   }
 }

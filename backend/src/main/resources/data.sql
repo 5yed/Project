@@ -115,3 +115,8 @@ INSERT INTO dietary_restriction (name) VALUES
 ('Gluten-free'),
 ('Dairy-free'),
 ('Nut-free');
+
+INSERT INTO menu_item_dietary_restriction VALUES
+(1, 1),
+(3, 2),
+(7, 5);

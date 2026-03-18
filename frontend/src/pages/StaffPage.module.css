@@ -16,3 +16,34 @@
   gap: 30px; 
   height: calc(100vh - 100px) ;
 }
+
+
+.alertsPanel {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fff4e5;
+  border: 1px solid #f0c36d;
+  border-radius: 12px;
+}
+
+.alertCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e6d3b0;
+}
+
+.alertCard:last-child {
+  border-bottom: none;
+}
+
+.alertCard button {
+  background: #2d6a4f;
+  color: white;
+  border: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+}

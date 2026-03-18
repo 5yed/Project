@@ -104,7 +104,8 @@ export default function OrderColumn({
               <div style={{ marginBottom: '12px' }}>
                 {order.orderItems?.map((item, idx) => (
                   <div key={idx} className={styles.orderItem}>
-                    <span>{item}</span>
+                    <span>{item.menuItem.name}</span>
+                    <span>{item.quantity}</span>
                   </div>
                 ))}
               </div>

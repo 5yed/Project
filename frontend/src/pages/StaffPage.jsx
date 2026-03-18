@@ -30,6 +30,7 @@ export default function StaffPage() {
 
   const [loading, setLoading] = useState(true);
   const [alerts, setAlerts] = useState([]);
+  const [resolvedAlerts, setResolvedAlerts] = useState([]);
 
   const socketRef = useRef();
 
@@ -101,6 +102,25 @@ export default function StaffPage() {
       setAlerts(res.data);
     } catch (err) {
       console.error("Failed to load alerts:", err);
+    }
+  };
+
+  const fetchResolvedAlerts = async () => {
+      try {
+          const res = await api.get("/api/alerts/resolved/all");
+          setResolvedAlerts(res.data);
+      } catch (err) {
+          console.error("Failed to load resolved alerts:", err);
+      }
+  };
+
+  const resolveAlert = async (id) => {
+    try {
+      await api.patch(`/api/alerts/${id}/resolve`);
+      fetchAlerts();
+      fetchResolvedAlerts();
+    } catch (err) {
+      console.error("Failed to resolve alert:", err);
     }
   };
 
@@ -217,9 +237,17 @@ export default function StaffPage() {
   useEffect(() => {
     fetchOrders();
     fetchAlerts();
+    fetchResolvedAlerts();
+
+    const alertsInterval = setInterval(() => {
+      fetchAlerts();
+    }, 5000);
 
     setupWebSocket();
+
     return () => {
+      clearInterval(alertsInterval);
+
       if (socketRef.current?.readyState === WebSocket.OPEN) {
         socketRef.current.close();
       }
@@ -239,7 +267,9 @@ export default function StaffPage() {
   
   return (
     <>
-      <TopBar
+      <TopBar 
+        alertCount = {alerts.length}
+        resolvedAlerts={resolvedAlerts}
         bottomRow={
           <>
             <div className={basePageStyles.sectionLabel}>

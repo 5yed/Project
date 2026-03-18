@@ -1,10 +1,28 @@
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import OrderItem from '../components/OrderItem';
+
 import api from '../tools/api';
 import styles from './CheckoutSection.module.css';
 import menuSectionStyles from './MenuSection.module.css';
-import { useState } from "react";
 
 export default function CheckoutSection() {
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+
   const [paid, setPaid] = useState(false);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      const res = await api.get(`/api/orders/${id}`);
+      setOrder(res.data);
+    };
+
+    fetchOrder();
+  }, [id]);
+
+  if (!order) return <div>Loading...</div>;
 
   const extractFormData = (e) => {
     const formData = new FormData(e.currentTarget);
@@ -31,8 +49,7 @@ export default function CheckoutSection() {
   const handleOrderCheckout = async (e) => {
     e.preventDefault();
     const itemData = extractFormData(e);
-    console.log("test");
-    const res = await api.post("/api/orders/1/checkout", itemData); // 1 should be changed to order.id when the fetching is implemented
+    const res = await api.post(`/api/orders/${id}/checkout`, itemData);
     setPaid(true);
   }
 
@@ -90,8 +107,16 @@ export default function CheckoutSection() {
           </div>
         </div>
         <div className={styles.basketContainer}>
-          <div className={styles.containerLabel}>
+          <div className={styles.basketLabel}>
             <h2>Basket</h2>
+          </div>
+          <div className={styles.orderItems}>
+            {order.orderItems.map((item) => (
+              <OrderItem
+                key={item.id}
+                item={item}
+              />
+            ))}
           </div>
         </div>
       </div>
