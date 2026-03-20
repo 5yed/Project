@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: row;
   width: 24rem;
-  height: 10rem;
-  background-color: #680605;
+  height: 8rem;
+  background-color: var(--surface-raised);
   border-radius: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
@@ -26,15 +26,26 @@
 .menuItemText {
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+
+.menuItemText * {
+  color: var(--primary-text);
+  font-size: 0.9rem;
 }
 
 .menuItem:hover {
-  filter: brightness(120%)
+  filter: brightness(92%)
+}
+
+.menuItemNameRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .menuItemName {
   font-size: 1.2rem;
-  text-align: left;
 }
 
 .menuItemPrice {

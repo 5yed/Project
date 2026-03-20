@@ -1,15 +1,69 @@
 .orderItem {
   display: flex;
-  justify-content: space-between;
-  margin: 0.25rem 0.25rem 0.25rem 0.25rem;
-  border-bottom: 1px solid black;
+  flex-direction: column;
   color: black;
+  padding: 0.5rem 0;
+  min-width: 0;
 }
 
-.orderItemName {
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.itemName {
+  margin: 0;
+  font-size: 1rem;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
-.orderItemPrice {
+.quantityContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.quantityBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #ccc;
+  background: black;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.quantityBtn:hover {
+  background: #f0f0f0;
+}
+
+.quantityValue {
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.priceRow {
   text-align: right;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: #555;
 }

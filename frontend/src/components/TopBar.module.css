@@ -1,7 +1,6 @@
 .topBarContainer {
   display: flex;
   flex-direction: column;
-  margin-bottom: 4rem;
   background-color: var(--secondary-bg);
 }
 

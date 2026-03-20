@@ -61,7 +61,7 @@
 
 .tableSelection__continue--disabled {
   background-color: rgba(0, 0, 0, 0.1);
-  color: white;
+  color: var(--primary-text);
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   pointer-events: none;

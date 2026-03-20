@@ -1,7 +1,18 @@
+.sectionButton, .sectionButton:hover{
+  color: #680605;
+  font-family: serif;
+}
+
+.mainContentsContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
 .buttonBar {
   display: flex;
   justify-content: left;
-  margin: 0rem 0rem 0.5rem 4rem;
 }
 
 .grid {

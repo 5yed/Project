@@ -3,14 +3,14 @@ import styles from './TableSelectionPage.module.css';
 import { useState } from 'react';
 
 export default function TableSelectionPage() {
-  const [continueAvailable, setContinueAvailable] = useState(false);
+  const [canContinue, setCanContinue] = useState(false);
 
   const checkTableNumberInput = (input) => {
     if(input != "" && parseInt(input) > 0 && parseInt(input) <= 30) { // 30 is max number of tables, can be changed
-      setContinueAvailable(true);
+      setCanContinue(true);
     }
     else {
-      setContinueAvailable(false);
+      setCanContinue(false);
     }
   }
   
@@ -33,7 +33,7 @@ export default function TableSelectionPage() {
           </div>
           <div className={styles.tableSelection__continueWrapper}>
             <Link
-              className={continueAvailable ? styles.tableSelection__continue : styles['tableSelection__continue--disabled']}
+              className={canContinue ? styles.tableSelection__continue : styles['tableSelection__continue--disabled']}
               to="/menu">
                 Continue
             </Link>

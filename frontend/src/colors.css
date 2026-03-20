@@ -1,7 +1,10 @@
 :root {
   --primary-bg: #680606;
   --secondary-bg: #F3C886;
+  --tertiary-bg: #51653E;
+  --surface: #DBC1A6;
+  --surface-raised: #F1D9C1;
+
   --primary-text: #680605;
   --secondary-text: #F3C886;
-  --tertiary-bg: #51653E;
 }

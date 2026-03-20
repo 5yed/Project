@@ -8,10 +8,11 @@ import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,39 +22,33 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.multipart.MultipartFile;
 import uk.ac.rhul.cs2810.dto.UpdateMenuItemRequest;
 import uk.ac.rhul.cs2810.model.Allergen;
-import uk.ac.rhul.cs2810.model.MenuItem;
 import uk.ac.rhul.cs2810.model.DietaryRestriction;
+import uk.ac.rhul.cs2810.model.MenuItem;
 import uk.ac.rhul.cs2810.model.MenuItemCategory;
 import uk.ac.rhul.cs2810.model.MenuItemStatus;
 import uk.ac.rhul.cs2810.repository.MenuItemCategoryRepository;
 import uk.ac.rhul.cs2810.repository.MenuItemRepository;
-import uk.ac.rhul.cs2810.service.MenuItemService;
 
 /**
  * Unit tests for MenuItemService.
  *
- * Tests menu item update, creation, validation and image upload behaviour. Dependencies are mocked
- * so only service logic is tested.
+ * <p>Tests menu item update, creation, validation and image upload behaviour. Dependencies are
+ * mocked so only service logic is tested.
  */
 class MenuItemServiceTest {
 
-  @Mock
-  private MenuItemRepository menuItemRepository;
+  @Mock private MenuItemRepository menuItemRepository;
 
-  @Mock
-  private MenuItemCategoryRepository categoryRepository;
+  @Mock private MenuItemCategoryRepository categoryRepository;
 
-  @InjectMocks
-  private MenuItemService service;
+  @InjectMocks private MenuItemService service;
 
   @BeforeEach
   void setup() {
     MockitoAnnotations.openMocks(this);
   }
 
-  /**
-   * Tests updating an existing menu item.
-   */
+  /** Tests updating an existing menu item. */
   @Test
   void updateMenuItem_success() {
 
@@ -78,9 +73,7 @@ class MenuItemServiceTest {
     assertEquals(item, result);
   }
 
-  /**
-   * Tests update throws when item missing.
-   */
+  /** Tests update throws when item missing. */
   @Test
   void updateMenuItem_notFound() {
 
@@ -91,9 +84,7 @@ class MenuItemServiceTest {
     assertThrows(RuntimeException.class, () -> service.updateMenuItem(99L, req));
   }
 
-  /**
-   * Tests successful creation of menu item.
-   */
+  /** Tests successful creation of menu item. */
   @Test
   void addMenuItem_success() {
 
@@ -120,9 +111,7 @@ class MenuItemServiceTest {
     verify(menuItemRepository).save(any());
   }
 
-  /**
-   * Tests validation: missing name.
-   */
+  /** Tests validation: missing name. */
   @Test
   void addMenuItem_missingName() {
 
@@ -137,9 +126,7 @@ class MenuItemServiceTest {
     assertThrows(IllegalArgumentException.class, () -> service.addMenuItem(req));
   }
 
-  /**
-   * Tests validation: category not found.
-   */
+  /** Tests validation: category not found. */
   @Test
   void addMenuItem_categoryNotFound() {
 
@@ -156,9 +143,7 @@ class MenuItemServiceTest {
     assertThrows(RuntimeException.class, () -> service.addMenuItem(req));
   }
 
-  /**
-   * Tests validation: negative fat not allowed.
-   */
+  /** Tests validation: negative fat not allowed. */
   @Test
   void addMenuItem_negativeFat() {
 
@@ -177,9 +162,7 @@ class MenuItemServiceTest {
     assertThrows(IllegalArgumentException.class, () -> service.addMenuItem(req));
   }
 
-  /**
-   * Tests successful image upload.
-   */
+  /** Tests successful image upload. */
   @Test
   void saveMenuItemFile_success() throws IOException {
 
@@ -195,13 +178,11 @@ class MenuItemServiceTest {
 
     service.saveMenuItemFile(1L, file);
 
-    verify(item).setImage(startsWith("/files/menu-items/"));
+    verify(item).setImage(startsWith("files/menu-items/"));
     verify(menuItemRepository).save(item);
   }
 
-  /**
-   * Tests upload fails for non-image file.
-   */
+  /** Tests upload fails for non-image file. */
   @Test
   void saveMenuItemFile_invalidType() {
 

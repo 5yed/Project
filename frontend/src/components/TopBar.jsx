@@ -53,9 +53,8 @@ export default function TopBar(props) {
               </div>
             )}
           </div>
-
         </div>
-      </ div>
+      </div>
     </>
   )
 }

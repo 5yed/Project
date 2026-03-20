@@ -1,15 +1,27 @@
 import styles from './OrderItem.module.css'
 
-export default function OrderItem({item}) {
+export default function OrderItem({item, onIncrement, onDecrement, readOnly=false}) {
   return(
     <div className={styles.orderItem}>
-      <div>
-        <h2 className={styles.orderItemName}>{item.menuItem.name}</h2>
+      <div className={styles.titleRow}>
+        <h2 className={styles.itemName}>{item.menuItem.name}</h2>
+        <div className={styles.quantityContainer}>
+          {!readOnly &&
+            <button
+              className={styles.quantityBtn}
+              onClick={onIncrement}
+            >+</button>
+          }
+          <span className={styles.quantityValue}>{item.quantity}</span>
+          {!readOnly &&
+            <button
+              className={styles.quantityBtn}
+              onClick={onDecrement}
+            >-</button>
+          }
+        </div>
       </div>
-      <div>
-        {/* placeholder*/}
-        <p className={styles.orderItemPrice}>£{item.menuItem.price}</p>
-      </div>
+      <p className={styles.priceRow}>£{(item.menuItem.price * item.quantity).toFixed(2)}</p>
     </div>
   )
 }

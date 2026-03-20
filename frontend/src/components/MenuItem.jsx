@@ -8,9 +8,11 @@ export default function MenuItem({item, onClick}) {
           <img src={`${import.meta.env.VITE_BACKEND_URL}/${item.image}`}/>
         </div>
         <div className={styles.menuItemText}>
-          <h2 className={styles.menuItemName}>{item.name}</h2>
+          <div className={styles.menuItemNameRow}>
+            <h2 className={styles.menuItemName}>{item.name}</h2>
+            <h3 className={styles.caloriesText}>{item.kcal} kcal</h3>
+          </div>
           <p className={styles.alignLeft}>{item.description}</p>
-          <h3 className={styles.caloriesText}>{item.kcal} kcal</h3>
           <div className={styles.menuItemPrice}>
             <h2>£{item.price}</h2> 
           </div>

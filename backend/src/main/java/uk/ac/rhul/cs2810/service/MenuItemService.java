@@ -25,7 +25,8 @@ public class MenuItemService {
   private final MenuItemRepository menuItemRepository;
   private final MenuItemCategoryRepository menuItemCategoryRepository;
 
-  public MenuItemService(MenuItemRepository menuItemRepository,
+  public MenuItemService(
+      MenuItemRepository menuItemRepository,
       MenuItemCategoryRepository menuItemCategoryRepository) {
     this.menuItemRepository = menuItemRepository;
     this.menuItemCategoryRepository = menuItemCategoryRepository;
@@ -79,8 +80,10 @@ public class MenuItemService {
 
   public MenuItem updateMenuItem(Long id, UpdateMenuItemRequest request) {
 
-    MenuItem menuItem = menuItemRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Menu item not found"));
+    MenuItem menuItem =
+        menuItemRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
     if (request.getName() != null) {
       menuItem.setName(request.getName());
@@ -123,11 +126,18 @@ public class MenuItemService {
       throw new IllegalArgumentException("Category is required");
     }
 
-    MenuItemCategory category = menuItemCategoryRepository.findById(request.getCategoryId())
-        .orElseThrow(() -> new RuntimeException("Menu item category not found"));
+    MenuItemCategory category =
+        menuItemCategoryRepository
+            .findById(request.getCategoryId())
+            .orElseThrow(() -> new RuntimeException("Menu item category not found"));
 
-    MenuItem menuItem = new MenuItem(request.getName(), request.getPrice(), request.getKcal(),
-        request.getStatus(), category);
+    MenuItem menuItem =
+        new MenuItem(
+            request.getName(),
+            request.getPrice(),
+            request.getKcal(),
+            request.getStatus(),
+            category);
 
     menuItem.setDescription(request.getDescription());
 
@@ -155,10 +165,11 @@ public class MenuItemService {
     return menuItemRepository.save(menuItem);
   }
 
-
   public void saveMenuItemFile(Long menuItemId, MultipartFile file) throws IOException {
-    MenuItem menuItem = menuItemRepository.findById(menuItemId)
-        .orElseThrow(() -> new RuntimeException("Menu item not found"));
+    MenuItem menuItem =
+        menuItemRepository
+            .findById(menuItemId)
+            .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
     // Verify that the file is an image
     String contentType = file.getContentType();
@@ -186,7 +197,7 @@ public class MenuItemService {
     Files.write(filepath, file.getBytes());
 
     // Save the path to the MenuItem entity
-    menuItem.setImage("/files/menu-items/" + uniqueFilename);
+    menuItem.setImage("files/menu-items/" + uniqueFilename);
     menuItemRepository.save(menuItem);
   }
 }
